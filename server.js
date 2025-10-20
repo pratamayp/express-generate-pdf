@@ -1,17 +1,16 @@
 const express = require('express');
-const { createPdfWithImageFromUrl } = require('./services/pdfGenerator');
+const { generateBookingAttachmentPdf, sampleBookingData } = require('./services/pdfGenerator');
 
 const app = express();
 const port = 3000;
 
 app.get('/generate-pdf', async (req, res) => {
-  // Set the response headers here, as it's a server concern
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'inline; filename=document.pdf');
+  res.setHeader('Content-Disposition', 'inline; filename=booking-confirmation.pdf');
 
-  const supabaseImageUrl = 'https://rxqfrojpwinspidmrgyl.supabase.co/storage/v1/object/public/edm/msf-logo.png';
+  const logoImageUrl = 'https://rxqfrojpwinspidmrgyl.supabase.co/storage/v1/object/public/edm/msf-logo-hd.png';
 
-  await createPdfWithImageFromUrl(res, supabaseImageUrl);
+  await generateBookingAttachmentPdf(res, logoImageUrl, sampleBookingData);
 });
 
 app.listen(port, () => {
